@@ -2,21 +2,21 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# ===========================
+
 # 1. Page settings
-# ===========================
+
 st.set_page_config(
     page_title="Australian Weather",
     page_icon="☀️",
     layout="centered"
 )
 
-# ===========================
+
 # 2. Load model
-# ===========================
+
 @st.cache_resource
 def load_model():
-    data = joblib.load("/Users/ulia/Downloads/aussie_rain.joblib")  
+    data = joblib.load("aussie_rain.joblib")  
     return data
 
 data = load_model()
@@ -27,22 +27,22 @@ encoder = data["encoder"]
 numeric_cols = data["numeric_cols"]
 categorical_cols = data["categorical_cols"]
 
-# ===========================
+
 # 3. Initialize session_state
-# ===========================
+
 if "weather_state" not in st.session_state:
     st.session_state["weather_state"] = "default"
 
-# ===========================
+
 # 4. Title
-# ===========================
+
 st.title("🇦🇺 Australian Weather Forecast")
 st.markdown("Check what the weather will be tomorrow — sunny or rainy")
 st.divider()
 
-# ===========================
+
 # 5. User input
-# ===========================
+
 st.markdown("### 📍 Main indicators")
 col1, col2 = st.columns(2)
 with col1:
@@ -93,9 +93,9 @@ with col2:
 with col3:
     Cloud3pm = st.slider("Cloudiness (0–9)", 0, 9, 4)
 
-# ===========================
+
 # 6. Build input dataframe
-# ===========================
+
 input_data = pd.DataFrame({
     "Location": [Location],
     "MinTemp": [MinTemp],
@@ -127,9 +127,9 @@ encoded = encoder.transform(input_data[categorical_cols])
 encoded_df = pd.DataFrame(encoded, columns=encoder.get_feature_names_out(categorical_cols))
 X_ready = pd.concat([scaled_df, encoded_df], axis=1)
 
-# ===========================
+
 # 7. Prediction
-# ===========================
+
 st.markdown("---")
 if st.button("Show forecast for tomorrow"):
     prob = model.predict_proba(X_ready)[0][1]
