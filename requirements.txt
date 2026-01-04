@@ -1,4 +1,6 @@
-joblib==1.4.0
-streamlit==1.38.0
+joblib==1.4.2
+streamlit==1.52.2
 scikit-learn==1.4.2
 pandas==2.2.2
+pydeck==0.8.0
+numpy==1.26.4
